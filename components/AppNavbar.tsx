@@ -32,7 +32,7 @@ function UserMenu() {
     return (
         <>
             <DropdownMenu>
-                <DropdownMenuTrigger>
+                <DropdownMenuTrigger asChild>
                     <button
                         type="button"
                         className="group flex shrink-0 items-center rounded-md border-0 bg-transparent outline-none hover:opacity-80 focus:outline-none focus-visible:outline-none focus-visible:ring-0"
