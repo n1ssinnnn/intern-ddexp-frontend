@@ -6,6 +6,7 @@ import { type DataTableFeatures } from "../../components/ui/data-table-features"
 import { UserList } from "@/types/user"
 import { cn } from "@/lib/utils";
 import { Badge } from "@/components/ui/badge";
+import Link from "next/link";
 
 const USER_STATUS_COLOR = {
     active: "text-success-700 bg-success-100 border-success-700 border rounded-full",
@@ -32,7 +33,8 @@ export const columns = columnHelper.columns([
     columnHelper.accessor("id", {
         header: () => <div className="text-sm font-semibold text-text-secondary">รหัสผู้ใช้งาน</div>,
         cell: ({ row }) => {
-            return <div className="text-sm font-normal text-text-secondary">{row.getValue("id")}</div>
+            const { id } = row.original;
+            return <Link href={`/user/${id}`} className="text-sm font-normal text-info-500 underline">{id}</Link>
         }
     }),
     columnHelper.accessor("name", {

@@ -36,7 +36,7 @@ export const MOCK_DATA: UserList[] = [
         status: true
     },
     {
-        id: 2,
+        id: 3,
         firstName: "Tanu",
         lastName: "Tuna",
         name: "Tanu Tuna",
@@ -47,7 +47,7 @@ export const MOCK_DATA: UserList[] = [
         status: true
     },
     {
-        id: 2,
+        id: 4,
         firstName: "Tanu",
         lastName: "Tuna",
         name: "Tanu Tuna",
@@ -58,7 +58,7 @@ export const MOCK_DATA: UserList[] = [
         status: true
     },
     {
-        id: 2,
+        id: 5,
         firstName: "Tanu",
         lastName: "Tuna",
         name: "Tanu Tuna",
@@ -69,7 +69,7 @@ export const MOCK_DATA: UserList[] = [
         status: true
     },
     {
-        id: 2,
+        id: 6,
         firstName: "Tanu",
         lastName: "Tuna",
         name: "Tanu Tuna",
@@ -80,7 +80,7 @@ export const MOCK_DATA: UserList[] = [
         status: true
     },
     {
-        id: 2,
+        id: 7,
         firstName: "Tanu",
         lastName: "Tuna",
         name: "Tanu Tuna",
@@ -91,7 +91,7 @@ export const MOCK_DATA: UserList[] = [
         status: true
     },
     {
-        id: 2,
+        id: 8,
         firstName: "Tanu",
         lastName: "Tuna",
         name: "Tanu Tuna",
@@ -102,7 +102,7 @@ export const MOCK_DATA: UserList[] = [
         status: true
     },
     {
-        id: 2,
+        id: 9,
         firstName: "Tanu",
         lastName: "Tuna",
         name: "Tanu Tuna",
@@ -113,7 +113,18 @@ export const MOCK_DATA: UserList[] = [
         status: true
     },
     {
-        id: 2,
+        id: 10,
+        firstName: "Tanu",
+        lastName: "Tuna",
+        name: "Tanu Tuna",
+        email: "example1@gmail.com",
+        company: "DDEXP",
+        companyImageUrl: "",
+        role: "user",
+        status: true
+    },
+    {
+        id: 11,
         firstName: "Tanu",
         lastName: "Tuna",
         name: "Tanu Tuna",
