@@ -72,7 +72,7 @@ export function AppNavbar({ title }: Readonly<AppNavbarProps>) {
 
     return (
         <>
-            <div className="sticky top-5 mx-10">
+            <div className="fixed top-5 left-10 right-10 bg-gray-50 z-10">
                 <header className="flex items-center justify-between px-4 py-3 border border-gray-200 rounded-2xl">
                     <h1 className="text-xl font-semibold text-text-primary">{pageTitle}</h1>
                     <UserMenu />

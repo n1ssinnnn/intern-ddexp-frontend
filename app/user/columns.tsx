@@ -3,7 +3,7 @@
 import { createColumnHelper } from "@tanstack/react-table"
 
 import { type DataTableFeatures } from "../../components/ui/data-table-features"
-import { UserList } from "@/types/user"
+import { UserListItem } from "@/types/user"
 import { cn } from "@/lib/utils";
 import { Badge } from "@/components/ui/badge";
 import Link from "next/link";
@@ -27,7 +27,7 @@ export const getUserStatusBadgeProps = (status: boolean) => {
     };
 };
 
-const columnHelper = createColumnHelper<DataTableFeatures, UserList>()
+const columnHelper = createColumnHelper<DataTableFeatures, UserListItem>()
 
 export const columns = columnHelper.columns([
     columnHelper.accessor("id", {

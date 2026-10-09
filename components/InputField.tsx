@@ -78,7 +78,7 @@ export function InputField({
                     onKeyDown={onKeyDown}
                     onChange={handleChange}
                     onPaste={onPaste}
-                    className={`${sizeClass} ${error ? "border-error-500 focus-visible:ring-error-500/30 focus-visible:border-error-500 hover:border-error-500" : ""}`}
+                    className={`placeholder:text-text-disabled ${sizeClass} ${error ? "border-error-500 focus-visible:ring-error-500/30 focus-visible:border-error-500 hover:border-error-500" : ""}`}
                     {...props}
                 />
 

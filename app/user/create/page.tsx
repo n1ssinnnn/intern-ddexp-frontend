@@ -1,17 +1,17 @@
 "use client";
 
-import { BaseModal } from "@/components/BaseModal";
 import DropdownField from "@/components/Dropdown";
 import { InputField } from "@/components/InputField";
 import { Button } from "@/components/ui/button";
-import { useUserById } from "@/hooks/useUser";
+import { toast } from "@/components/ui/toast";
+import { useCreateUser } from "@/hooks/useUser";
 import { ArrowLeft } from "lucide-react";
 import Link from "next/link";
-import { useParams, usePathname } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
+import type { UserRole } from "@/types/user";
 
-type UpdateUserInputs = {
+type CreateUserInputs = {
     firstName: string;
     lastName: string;
     email: string;
@@ -21,23 +21,16 @@ type UpdateUserInputs = {
     confirmPassword: string;
 };
 
-export default function UserDetail() {
-
-    const param = useParams()
-    const idParam = param.id as string
-
-    // State
-    const [deleteModalOpen, setDeleteModalOpen] = useState(false);
-
-    const { user, error, isLoading } = useUserById(idParam)
-
+export default function CreateUserPage() {
+    const router = useRouter();
+    const { createUser, isMutating } = useCreateUser();
     const {
         control,
         handleSubmit,
         getValues,
         reset,
         formState: { errors },
-    } = useForm<UpdateUserInputs>({
+    } = useForm<CreateUserInputs>({
         defaultValues: {
             firstName: "",
             lastName: "",
@@ -49,29 +42,31 @@ export default function UserDetail() {
         },
     });
 
-    useEffect(() => {
-        if (!user) return;
-
-        reset({
-            firstName: user.firstName ?? "",
-            lastName: user.lastName ?? "",
-            email: user.email ?? "",
-            company: user.company ?? "",
-            role: user.role ?? "",
-            password: "",
-            confirmPassword: "",
-        });
-    }, [user, reset]);
-
-    // Actions
-    const onDelete = ""
-    const onSubmit: SubmitHandler<UpdateUserInputs> = (data) => {
-        console.log(data);
-    };
-
-    if (isLoading) return <p>Loading…</p>;
-    if (error) return <p>{error.message}</p>;
-    if (!user) return <p>User not found.</p>;
+    const onSubmit: SubmitHandler<CreateUserInputs> = async (data) => {
+        try {
+            const payload = {
+                firstName: data.firstName,
+                lastName: data.lastName,
+                email: data.email,
+                company: data.company,
+                role: data.role as UserRole,
+                password: data.password,
+                confirmPassword: data.confirmPassword,
+            };
+            await createUser(payload);
+            reset();
+            toast.add({
+                type: "success",
+                description: "สร้างผู้ใช้งานสำเร็จ",
+            });
+            router.push("/user");
+        } catch (err: unknown) {
+            toast.add({
+                type: "error",
+                description: err instanceof Error ? err.message : "ไม่สามารถสร้างผู้ใช้งานได้",
+            });
+        }
+    }
 
     return (
         <div className="flex flex-col mx-10 gap-5 bg-background">
@@ -82,15 +77,8 @@ export default function UserDetail() {
                         ย้อนกลับ
                     </Button>
                 </Link>
-                <Button
-                    type="button"
-                    variant="outlineDestructive"
-                    onClick={() => setDeleteModalOpen(true)}
-                >
-                    ลบผู้ใช้งาน
-                </Button>
             </div>
-            <h1 className="text-3xl font-semibold text-text-primary">แก้ไขผู้ใช้งาน</h1>
+            <h1 className="text-3xl font-semibold text-text-primary">เพิ่มผู้ใช้งาน</h1>
             <p className="text-lg font-semibold text-black">ข้อมูลผู้ใช้งาน</p>
 
             <form onSubmit={handleSubmit(onSubmit)} noValidate >
@@ -203,6 +191,7 @@ export default function UserDetail() {
                                 <Controller
                                     control={control}
                                     name="password"
+                                    rules={{ required: "กรุณากรอกรหัสผ่าน" }}
                                     render={({ field }) => (
                                         <InputField
                                             {...field}
@@ -210,8 +199,8 @@ export default function UserDetail() {
                                             type="password"
                                             label="รหัสผ่าน"
                                             placeholder="กรอกรหัสผ่าน"
-                                            value="********"
-                                            disabled
+                                            required
+                                            error={errors.password?.message}
                                         />
                                     )}
                                 />
@@ -220,6 +209,11 @@ export default function UserDetail() {
                                 <Controller
                                     control={control}
                                     name="confirmPassword"
+                                    rules={{
+                                        required: "กรุณายืนยันรหัสผ่าน",
+                                        validate: (value) =>
+                                            value === getValues("password") || "รหัสผ่านไม่ตรงกัน",
+                                    }}
                                     render={({ field }) => (
                                         <InputField
                                             {...field}
@@ -227,8 +221,8 @@ export default function UserDetail() {
                                             type="password"
                                             label="ยืนยันรหัสผ่าน"
                                             placeholder="ยืนยันรหัสผ่าน"
-                                            value="********"
-                                            disabled
+                                            required
+                                            error={errors.confirmPassword?.message}
                                         />
                                     )}
                                 />
@@ -245,20 +239,12 @@ export default function UserDetail() {
                         >
                             ยกเลิก
                         </Button>
-                        <Button type="submit" className="h-10 min-w-[70px] bg-[#5b63ff] hover:bg-[#4e56eb]">
-                            แก้ไข
+                        <Button type="submit" disabled={isMutating} className="h-10 min-w-[70px] bg-[#5b63ff] hover:bg-[#4e56eb]">
+                            {isMutating ? "กำลังเพิ่ม..." : "เพิ่มผู้ใช้งาน"}
                         </Button>
                     </div>
                 </div>
             </form>
-
-            <BaseModal
-                open={deleteModalOpen}
-                title="คุณต้องการลบผู้ใช้นี้หรือไม่"
-                description="หากลบจะไม่สามาใช้งานผู้ใช้นี้ได้อีก คุณแน่ใจหรือไม่"
-                onPrimary={() => { }}
-                onOpenChange={setDeleteModalOpen}
-            />
         </div>
     );
 }
